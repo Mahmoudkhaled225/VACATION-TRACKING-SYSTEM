@@ -64,3 +64,97 @@ and this is the sequence diagram of this use case
 
 and this is the flow chart of this use case
 [flow chart img](FlowChart.png)
+
+and finally Psudeocode 
+
+FUNCTION processWorkerRequest(workerId, requestData):
+
+    IF NOT AuthService.isAuthenticated(workerId):
+        RETURN "Error: User not authenticated"
+    ENDIF
+
+    validationResult = Validator.validateRequest(requestData)
+    IF validationResult == INVALID:
+        RETURN "Error: Invalid request data"
+    ENDIF
+
+    workerType = Database.getWorkerType(workerId)
+
+    IF workerType.requiresManagerApproval == TRUE THEN
+
+        requestId = Database.saveRequest(workerId, requestData, status="PENDING")
+
+        managerId = Database.getWorkerManager(workerId)
+        approvalLink = WebServer.generateApprovalLink(requestId, managerId)
+        EmailService.send(to=managerId, subject="Approval Required", body=approvalLink)
+
+        RETURN "Request submitted and pending manager approval"
+
+    ELSE
+        requestId = Database.saveRequest(workerId, requestData, status="APPROVED")
+        EmailService.send(to=workerId, subject="Request Approved", body="Your request has been auto-approved.")
+        RETURN "Request approved automatically"
+    ENDIF
+END FUNCTION
+
+
+FUNCTION handleManagerApproval(managerId, requestId, decision):
+
+    IF NOT AuthService.isAuthenticated(managerId):
+        RETURN "Error: Manager not authenticated"
+    ENDIF
+
+    request = Database.getRequestById(requestId)
+    workersData = Database.getWorkersUnderManager(managerId)
+
+    IF decision == "APPROVE":
+        Database.updateRequestStatus(requestId, "APPROVED")
+        EmailService.send(to=request.workerId, subject="Request Approved",
+                          body="Your manager has approved your request.")
+
+    ELSE IF decision == "REJECT":
+        Database.updateRequestStatus(requestId, "REJECTED")
+        EmailService.send(to=request.workerId, subject="Request Rejected",
+                          body="Your manager has rejected your request.")
+    ELSE
+        RETURN "Error: Invalid decision value"
+    ENDIF
+
+    RETURN "Manager decision processed successfully"
+END FUNCTION
+
+
+MODULE AuthService:
+    FUNCTION isAuthenticated(userId):
+        // Verify session or token validity
+        RETURN TRUE or FALSE
+    END FUNCTION
+END MODULE
+
+MODULE Validator:
+    FUNCTION validateRequest(data):
+        // Apply business rules for validation
+        RETURN VALID or INVALID
+    END FUNCTION
+END MODULE
+
+MODULE Database:
+    FUNCTION getWorkerType(workerId)
+    FUNCTION getWorkerManager(workerId)
+    FUNCTION saveRequest(workerId, data, status)
+    FUNCTION updateRequestStatus(requestId, status)
+    FUNCTION getRequestById(requestId)
+    FUNCTION getWorkersUnderManager(managerId)
+END MODULE
+
+MODULE EmailService:
+    FUNCTION send(to, subject, body):
+        // Queue email for delivery
+    END FUNCTION
+END MODULE
+
+MODULE WebServer:
+    FUNCTION generateApprovalLink(requestId, managerId):
+        RETURN "https://intranet.company.com/approve?req=" + requestId + "&mgr=" + managerId
+    END FUNCTION
+END MODULE
