@@ -1,8 +1,5 @@
 ---
 title: "VACATION TRACKING SYSTEM  — Vision & Requirements"
-tags:
-    - vision
-    - requirements
 ---
 
 # Vision
