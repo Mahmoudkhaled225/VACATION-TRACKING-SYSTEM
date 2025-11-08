@@ -182,7 +182,7 @@ END MODULE
 **Use case name:** Withdraw Vacation Request  
 **Actor:** Employee  
 **Goal:** Employee withdraws a pending vacation request before it is approved or rejected.
-**Preconditions:** Employee must be authenticated The request status must be `Pending`
+**Preconditions:** Employee must be authenticated The request status must be `Pending`.
 
 ### 🪜 Main Flow
 1. Employee selects a pending request to withdraw.  
@@ -304,3 +304,73 @@ FUNCTION handleManagerNotification(managerId):
     RETURN "Manager dashboard updated with latest requests"
 END FUNCTION
 ```
+
+---
+
+## 🎯 Cancel Approved Request
+
+**Use case name:** Cancel Approved Request  
+**Actor:**   
+**Goal:** The employee wants to cancel an approved vacation time request.
+**Preconditions:** The employee has a vacation time request that has been approved and is scheduled for some time in the future or the recent past (previous 5 business days).
+
+### 🪜 Main Flow
+1. The employee navigates to the VTS home page through the intranet portal application, which identifies and authenticates the employee with the privileges necessary for using the VTS.
+2. The VTS home page contains a summary of vacation time requests, outstanding balance per category of time, and the current status of all active vacation time requests for the previous 6 months and up to 18 months in the future.
+3. The employee selects a vacation time request to cancel, one that is in the future (or recent past) and has been approved.
+4. If the request is in the future, the employee is prompted to confirm the cancellation. If the request is in the recent past, the employee is prompted to confirm the cancellation and provide a short explanation. 
+If the employee approves the cancellation and provides the required information, an e-mail notification is sent to the manager, and the state of the request is changed to canceled. The time allowances used to make the request are returned to the employee. The employee can also abort the cancellation, effecting no changes to the current requests.
+5. The employee is returned to the main VTS home page. The summaries are updated to reflect any changes made to the employee’s outstanding vacation time requests.
+   
+---
+
+## 🧩 Sequence Diagram
+
+---
+
+## 🔁 Flow Chart
+
+---
+
+## 💻 Pseudocode
+
+```plaintext
+```
+
+---
+
+## 🎯 Edit Pending Request
+
+**Use case name:** Cancel Approved Request  
+**Actor:**   
+**Goal:** The employee wants to edit the description or title of a pending request.
+**Preconditions:**  An employee has made a vacation time request, and thatrequest has yet to be approved or denied by an authorized manager. 
+**Preconditions:** An employee has made a vacation time request, and that request has yet to be approved or denied by an authorized manager.
+
+### 🪜 Main Flow
+1. The employee navigates to the VTS home page through the intranet portal application, which identifies and authenticates the employee with the privileges necessary for using the VTS.
+2. The VTS home page contains a summary of vacation time requests, outstanding balances per category of time, and the current status of all
+active vacation time requests for the previous 6 months and up to 18 months in the future.
+3. The employee selects a request to edit, one that is pending approval.
+4. The VTS displays an editable view of the request. The employee is allowed to change the title, comments, or dates. The employee can also
+choose to delete or withdraw this request.
+5. The employee changes request information and submits the changes to the system.
+6. If the employee withdraws the request, the VTS prompts for confirmation before withdrawing the request. If changes are made only to the information, the changes are accepted, and the screen returns to the main VTS home page. If there are errors or problems with the information changes, the VTS redisplays the editing page and highlights and
+explains all problems.
+   
+---
+
+## 🧩 Sequence Diagram
+
+---
+
+## 🔁 Flow Chart
+
+---
+
+## 💻 Pseudocode
+
+```plaintext
+```
+
+
