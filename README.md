@@ -373,4 +373,9 @@ explains all problems.
 ```plaintext
 ```
 
+---
+
+What if we need to have in the future another status like HR_Pending, HR_Approval with minimum change?
+
+IF During Designing we get it as fact that the request stauts will be changes it will better to design it as Table in Database not as enum so the change will not need Code change 
 
