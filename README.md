@@ -204,9 +204,13 @@ END MODULE
 ---
 
 ## 🔁 Flow Chart
-![WithdrawRequest Emp Flowchart](WithdrawRequest-Emp-Flowchart.png)
-![WithdrawRequest Manager Flowchart](WithdrawRequest-Manager-Flowchart.png)
- 
+![WithdrawRequest Emp Flowchart](WithdrawRequest-Emp-FlowChart.png)
+
+
+---
+
+![WithdrawRequest Manager Flowchart](WithdrawRequest-Manager-FlowChart.png)
+
 ---
 
 ## 💻 Pseudocode
