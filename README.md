@@ -179,11 +179,6 @@ END MODULE
 
 ## 🎯 Withdraw Vacation Request
 
-**Use case name:** Manage Time  
-**Actor:** Employee  
-**Goal:** Submit a new vacation time request.  
-**Preconditions:** The employee is authenticated via the portal and has privileges to manage vacation time.
-
 **Use case name:** Withdraw Vacation Request  
 **Actor:** Employee  
 **Goal:** Employee withdraws a pending vacation request before it is approved or rejected.
@@ -201,6 +196,9 @@ END MODULE
 
 ## 🧩 Sequence Diagram
 ![WithdrawRequest Emp Sequence Diagram](WithdrawRequest-Emp-SequenceDiagram.png)
+
+---
+
 ![WithdrawRequest Manager Sequence Diagram](WithdrawRequest-Manager-SequenceDiagram.png)
 
 ---
