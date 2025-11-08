@@ -6,6 +6,11 @@ It provides a solution to manage employment agreements and leave requests — re
 
 ---
 
+## 🏢 Domain Problem
+Centered around the management of employee vacation time, sick leave, and personal time off within an organization.
+
+---
+
 ## 👥 Actors
 - **Workers**
 - **Managers**
@@ -30,6 +35,7 @@ It provides a solution to manage employment agreements and leave requests — re
 
 ## 🧭 Non-Functional Requirements
 - The system must be **easy to use**.
+- The portal’s single-sign-on mechanisms manages roles and permissions the HR legacy has a working API to retrieve employee data.
 
 ---
 
@@ -167,3 +173,132 @@ MODULE WebServer:
         RETURN "https://intranet.company.com/approve?req=" + requestId + "&mgr=" + managerId
     END FUNCTION
 END MODULE
+
+```
+---
+
+## 🎯 Withdraw Vacation Request
+
+**Use case name:** Manage Time  
+**Actor:** Employee  
+**Goal:** Submit a new vacation time request.  
+**Preconditions:** The employee is authenticated via the portal and has privileges to manage vacation time.
+
+**Use case name:** Withdraw Vacation Request  
+**Actor:** Employee  
+**Goal:** Employee withdraws a pending vacation request before it is approved or rejected.
+**Preconditions:** Employee must be authenticated The request status must be `Pending`
+
+### 🪜 Main Flow
+1. Employee selects a pending request to withdraw.  
+2. System prompts confirmation message.  
+3. Employee confirms withdrawal.  
+4. System updates request status to `Withdrawn`.  
+5. Notification emails are sent to both manager and employee.  
+6. Manager dashboard is refreshed with updated requests.
+
+---
+
+## 🧩 Sequence Diagram
+![WithdrawRequest Emp Sequence Diagram](WithdrawRequest-Emp-SequenceDiagram.png)
+![WithdrawRequest Manager Sequence Diagram](WithdrawRequest-Manager-SequenceDiagram.png)
+
+---
+
+## 🔁 Flow Chart
+![WithdrawRequest Emp Flowchart](WithdrawRequest-Emp-Flowchart.png)
+![WithdrawRequest Manager Flowchart](WithdrawRequest-Manager-Flowchart.png)
+ 
+---
+
+## 💻 Pseudocode
+
+```plaintext
+MODULE AuthService:
+    FUNCTION isAuthenticated(userId):
+        // Check session or token validity
+        RETURN TRUE or FALSE
+    END FUNCTION
+END MODULE
+
+
+MODULE Database:
+    FUNCTION getRequestById(requestId):
+        // Retrieve vacation request details from database
+        RETURN RequestObject
+    END FUNCTION
+
+    FUNCTION updateRequestStatus(requestId, newStatus):
+        // Update vacation request status in database
+    END FUNCTION
+
+    FUNCTION getManagerPendingRequests(managerId):
+        // Get all pending requests for manager
+        RETURN ListOfRequests
+    END FUNCTION
+END MODULE
+
+
+MODULE EmailService:
+    FUNCTION send(to, subject, body):
+        // Send email notification
+    END FUNCTION
+END MODULE
+
+
+MODULE UI:
+    FUNCTION promptConfirmation(message):
+        // Show confirmation dialog to user
+        RETURN TRUE or FALSE
+    END FUNCTION
+
+    FUNCTION refreshDashboard(data):
+        // Refresh manager dashboard UI
+    END FUNCTION
+END MODULE
+
+
+FUNCTION processWithdrawRequest(employeeId, requestId):
+
+    IF NOT AuthService.isAuthenticated(employeeId):
+        RETURN "Error: Employee not authenticated"
+    ENDIF
+
+    request = Database.getRequestById(requestId)
+
+    IF request.status != "PENDING":
+        RETURN "Error: Only pending requests can be withdrawn"
+    ENDIF
+
+    confirmation = UI.promptConfirmation("Are you sure you want to withdraw this request?")
+    IF confirmation == FALSE:
+        RETURN "Action canceled by employee"
+    ENDIF
+
+    Database.updateRequestStatus(requestId, "WITHDRAWN")
+
+    managerId = request.managerId
+    EmailService.send(to=managerId,
+                      subject="Vacation Request Withdrawn",
+                      body="Employee " + request.employeeName + " has withdrawn their vacation request.")
+
+    EmailService.send(to=employeeId,
+                      subject="Withdrawal Confirmed",
+                      body="Your vacation request has been successfully withdrawn.")
+
+    RETURN "Vacation request withdrawn successfully"
+END FUNCTION
+
+
+FUNCTION handleManagerNotification(managerId):
+
+    IF NOT AuthService.isAuthenticated(managerId):
+        RETURN "Error: Manager not authenticated"
+    ENDIF
+
+    updatedRequests = Database.getManagerPendingRequests(managerId)
+    UI.refreshDashboard(updatedRequests)
+
+    RETURN "Manager dashboard updated with latest requests"
+END FUNCTION
+```
