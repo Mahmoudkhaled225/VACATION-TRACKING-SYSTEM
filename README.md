@@ -326,15 +326,80 @@ If the employee approves the cancellation and provides the required information,
 
 ## 🧩 Sequence Diagram
 
+#### Employee - Cancel Approved Request
+![Employee Cancel Request Sequence](Employee-CancelRequest-SequenceDiagram.png)
+
+---
+
+#### Manager - Handle Canceled Request
+![Manager Handle Canceled Sequence](Manager-HandleCanceled-SequenceDiagram.png)
+
 ---
 
 ## 🔁 Flow Chart
+
+#### Employee Flow
+![Employee Cancel Flow](Employee-Cancel-Flowchart.png)
+
+---
+
+#### Manager Flow
+![Manager Cancel Flow](Manager-Cancel-Flowchart.png)
 
 ---
 
 ## 💻 Pseudocode
 
 ```plaintext
+FUNCTION processEmployeeCancellation(employeeId, requestId):
+
+    IF NOT AuthService.isAuthenticated(employeeId):
+        RETURN "Error: Employee not authenticated"
+    ENDIF
+
+    request = Database.getRequestById(requestId)
+    IF request.status != "APPROVED":
+        RETURN "Error: Only approved requests can be canceled"
+    ENDIF
+
+    IF request.date >= Today():
+        confirmation = UI.promptConfirmation("Cancel upcoming request?")
+        reason = NULL
+    ELSE IF request.date >= Today() - 5 days:
+        (confirmation, reason) = UI.promptWithReason("Cancel recent request?", "Provide reason:")
+    ELSE
+        RETURN "Error: Too old to cancel"
+    ENDIF
+
+    IF NOT confirmation:
+        RETURN "Canceled aborted by employee"
+    ENDIF
+
+    Database.updateRequestStatus(requestId, "CANCELED")
+    Database.returnVacationAllowance(employeeId, request.duration)
+    EmailService.send(to=request.managerId, subject="Request Canceled", body="Employee canceled approved vacation")
+    UI.refreshHomePage(employeeId)
+
+    RETURN "Request successfully canceled"
+END FUNCTION
+
+
+FUNCTION handleManagerCancellationNotification(managerId, requestId):
+
+    IF NOT AuthService.isAuthenticated(managerId):
+        RETURN "Error: Manager not authenticated"
+    ENDIF
+
+    request = Database.getRequestById(requestId)
+    IF request.status == "CANCELED":
+        UI.displayNotification(managerId, "Employee canceled approved request")
+    ELSE
+        RETURN "No action required"
+    ENDIF
+
+    RETURN "Manager notified successfully"
+END FUNCTION
+
 ```
 
 ---
@@ -362,9 +427,25 @@ explains all problems.
 
 ## 🧩 Sequence Diagram
 
+#### 🧑‍💼 Employee - Cancel Approved Request
+![Employee Cancel Request Sequence](Employee-CancelRequest-SequenceDiagram.png)
+
+---
+
+#### 👨‍💼 Manager - Handle Canceled Request
+![Manager Handle Canceled Sequence](Manager-HandleCanceled-SequenceDiagram.png)
+
 ---
 
 ## 🔁 Flow Chart
+
+#### Employee Flow
+![Employee Cancel Flow](Employee-Cancel-Flowchart.png)
+
+---
+
+#### Manager Flow
+![Manager Cancel Flow](Manager-Cancel-Flowchart.png)
 
 ---
 
