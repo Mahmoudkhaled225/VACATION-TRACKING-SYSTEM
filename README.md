@@ -432,7 +432,7 @@ explains all problems.
 
 ## 🧩 Sequence Diagram
 
-#### 🧑‍💼 Employee - Cancel Approved Request
+#### 🧑‍💼 Employee - Edit Pending Request
 ![Employee Edit Pending Sequence](Employee-EditPending-SequenceDiagram.png)
 
 ---
