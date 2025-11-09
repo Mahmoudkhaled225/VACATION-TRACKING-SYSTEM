@@ -35,6 +35,7 @@ Centered around the management of employee vacation time, sick leave, and person
 
 ## 🧭 Non-Functional Requirements
 - The system must be **easy to use**.
+- Use existing hardware and middleware.
 - The portal’s single-sign-on mechanisms manages roles and permissions the HR legacy has a working API to retrieve employee data.
 
 ---
