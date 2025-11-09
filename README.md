@@ -433,30 +433,90 @@ explains all problems.
 ## 🧩 Sequence Diagram
 
 #### 🧑‍💼 Employee - Cancel Approved Request
-![Employee Cancel Request Sequence](Employee-CancelRequest-SequenceDiagram.png)
-
----
-
-#### 👨‍💼 Manager - Handle Canceled Request
-![Manager Handle Canceled Sequence](Manager-HandleCanceled-SequenceDiagram.png)
+![Employee Edit Pending Sequence](Employee-EditPending-SequenceDiagram.png)
 
 ---
 
 ## 🔁 Flow Chart
 
 #### Employee Flow
-![Employee Cancel Flow](Employee-Cancel-Flowchart.png)
+![Employee Edit Pending Flowchart](Employee-EditPending-Flowchart.png)
 
 ---
 
-#### Manager Flow
-![Manager Cancel Flow](Manager-Cancel-Flowchart.png)
-
+## 🔁 State Management
+![Edit Pending State Diagram](EditPending-StateDiagram.png)
 ---
 
 ## 💻 Pseudocode
 
 ```plaintext
+FUNCTION processEditPendingRequest(employeeId, requestId, updatedData, action):
+
+    IF NOT AuthService.isAuthenticated(employeeId):
+        RETURN "Error: User not authenticated"
+    ENDIF
+
+    request = Database.getRequestById(requestId)
+    IF request.status != "PENDING":
+        RETURN "Error: Only pending requests can be edited or withdrawn"
+    ENDIF
+
+    IF action == "WITHDRAW":
+        confirmation = UI.promptConfirmation("Withdraw this request?")
+        IF NOT confirmation:
+            RETURN "Withdrawal canceled by employee"
+        ENDIF
+
+        Database.updateRequestStatus(requestId, "WITHDRAWN")
+        EmailService.send(to=request.managerId,
+                          subject="Request Withdrawn",
+                          body="Employee has withdrawn a pending request.")
+        RETURN "Request withdrawn successfully"
+    ELSE IF action == "EDIT":
+        validation = Validator.validateRequest(updatedData)
+
+        IF validation == INVALID:
+            UI.displayFormErrors(validation.errors)
+            RETURN "Error: Invalid updated data"
+        ENDIF
+
+        Database.updateRequest(requestId, updatedData)
+        RETURN "Request updated successfully"
+    ELSE
+        RETURN "Error: Unknown action"
+    ENDIF
+
+END FUNCTION
+
+
+MODULE AuthService:
+    FUNCTION isAuthenticated(userId)
+        // check session or token
+    END FUNCTION
+END MODULE
+
+MODULE Validator:
+    FUNCTION validateRequest(data)
+        // check fields and rules
+    END FUNCTION
+END MODULE
+
+MODULE Database:
+    FUNCTION getRequestById(requestId)
+    FUNCTION updateRequest(requestId, updatedData)
+    FUNCTION updateRequestStatus(requestId, status)
+END MODULE
+
+MODULE EmailService:
+    FUNCTION send(to, subject, body)
+END MODULE
+
+MODULE UI:
+    FUNCTION promptConfirmation(message)
+    FUNCTION displayFormErrors(errors)
+END MODULE
+
 ```
 
 ---
