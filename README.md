@@ -76,7 +76,7 @@ Centered around the management of employee vacation time, sick leave, and person
 ---
 
 ## 🔁 State Management
-![Cancel Request State Diagram](Cancel-State-Diagram.png)
+![Manage Time Diagram](ManageTime-StateDigram.png)
 
 ---
 
