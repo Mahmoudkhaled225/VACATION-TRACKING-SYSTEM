@@ -338,13 +338,18 @@ If the employee approves the cancellation and provides the required information,
 
 ## 🔁 Flow Chart
 
-#### Employee Flow
+#### Employee Flow - Cancel Approved Request
 ![Employee Cancel Flow](Employee-Cancel-Flowchart.png)
 
 ---
 
-#### Manager Flow
+#### Manager Flow - Handle Canceled Request
 ![Manager Cancel Flow](Manager-Cancel-Flowchart.png)
+
+---
+
+## 🔁 State Management
+![Cancel Request State Diagram](Cancel-State-Diagram.png)
 
 ---
 
