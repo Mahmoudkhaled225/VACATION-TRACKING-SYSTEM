@@ -75,6 +75,11 @@ Centered around the management of employee vacation time, sick leave, and person
 
 ---
 
+## 🔁 State Management
+![Cancel Request State Diagram](Cancel-State-Diagram.png)
+
+---
+
 ## 💻 Pseudocode
 
 ```plaintext
@@ -196,20 +201,24 @@ END MODULE
 ---
 
 ## 🧩 Sequence Diagram
+
+#### Employee - Withdraw Vacation Request
 ![WithdrawRequest Emp Sequence Diagram](WithdrawRequest-Emp-SequenceDiagram.png)
 
 ---
 
+#### Manager - Withdraw Vacation Request
 ![WithdrawRequest Manager Sequence Diagram](WithdrawRequest-Manager-SequenceDiagram.png)
 
 ---
 
 ## 🔁 Flow Chart
+#### Employee Flow - Withdraw Vacation Request
 ![WithdrawRequest Emp Flowchart](WithdrawRequest-Emp-FlowChart.png)
 
 
 ---
-
+#### Manager Flow - Withdraw Vacation Request
 ![WithdrawRequest Manager Flowchart](WithdrawRequest-Manager-FlowChart.png)
 
 ---
